@@ -40,14 +40,14 @@ root_user = "cn=root,#{domain}"
 root_pass = "secretpassword"
 
 #Creates initial entry for example.com domain
-libs_ldap_domain "example.com" do
+ldap_domain "example.com" do
   host server_ip
   username root_user
   password root_pass
 end
 
 #Creates ou=test, from example.com base entry.So it will be : ou=test,dc=example,dc=com
-libs_ldap_organizationalUnit "test" do
+ldap_organizationalUnit "test" do
   host server_ip
   username root_user
   password root_pass
@@ -55,7 +55,7 @@ libs_ldap_organizationalUnit "test" do
 end
 
 #Creates ou=testi1, from ou=test entry in example.com base domain.So it will be : ou=test1,ou=test,dc=example,dc=com
-libs_ldap_organizationalUnit "test1" do
+ldap_organizationalUnit "test1" do
   host server_ip
   username root_user
   password root_pass
@@ -64,7 +64,7 @@ libs_ldap_organizationalUnit "test1" do
 end
 
 #Creates internal ldap user which can be granted privileges for reading,writing.
-libs_ldap_person "client" do
+ldap_person "client" do
   host server_ip
   username root_user
   password root_pass
@@ -73,7 +73,7 @@ libs_ldap_person "client" do
   make "rebuild"
 end
 
-libs_ldap_person "client2" do
+ldap_person "client2" do
   host server_ip
   parents ["test"] #Parents attribute accepts ou entries list in array.Later it will concatenate it generating DN entry
   username root_user
@@ -84,7 +84,7 @@ libs_ldap_person "client2" do
 end
 
 #Creates posix group for linux group usage.
-libs_ldap_posixGroup "test" do
+ldap_posixGroup "test" do
   host server_ip
   gid 5555
   username root_user
@@ -93,7 +93,7 @@ libs_ldap_posixGroup "test" do
   make "rebuild"
  end
 
- libs_ldap_posixGroup "test1" do
+ ldap_posixGroup "test1" do
   host server_ip
   parents ["test"] #Parents attribute accepts ou entries list in array.Later it will concatenate it generating DN entry
   gid 5556
@@ -103,7 +103,7 @@ libs_ldap_posixGroup "test" do
  end
 
 #Creates posix user for linux user usage.
- libs_ldap_posixAccount "test" do
+ ldap_posixAccount "test" do
   user_password "test1234" #For password will be generated sha string.And it will be stored in LDAP not in plain view
   host server_ip
   uid 5555
@@ -113,7 +113,7 @@ libs_ldap_posixGroup "test" do
   domain "example.com"
  end
 
-libs_ldap_posixAccount "test123" do
+ldap_posixAccount "test123" do
   user_password "test1234"
   host server_ip
   parents ["test"]
@@ -128,7 +128,7 @@ libs_ldap_posixAccount "test123" do
  end
 
 #Creates sudo privileges for desired user.
- libs_ldap_sudoRole "test" do
+ ldap_sudoRole "test" do
   sudo_command1 "rm -rf *"
   sudo_command2 "/etc/init.d"
   sudo_command3 "tail -f /var/log/*"
