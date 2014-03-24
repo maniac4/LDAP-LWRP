@@ -1,7 +1,10 @@
 Description:
+=============
 Configures LDAP Database using net-ldap gem and chef.
 
 Dependencies:
+--------------
+```text
   Gems:
     net-ldap gem
     digest gem(goes natively in latest chef-solo/chef-client package)
@@ -9,23 +12,28 @@ Dependencies:
     core.schema(moved sn attribute from person objectclass from must to may section)
     nis.schema(added groupname attribute for searching in this library for posixGroup objectclass)
     sudo.schema
+```
 
 Actions:
+---------
+```text
 Default action is process.
 But if you want to manipulate the resourse you need to user attribute make.
 Which can have 3 values:
 -create (Creates entry.But do not modifies it if it exists)
 -delete (Deletes entry if it exists)
 -rebuild (This value you should use if you need to modify an entry.It simply sequentialy executes "delete" and then "create" values) 
-
+```
 Warning:
+-----------
 Please make sure that entry you are installing is having properly builded tree.
 So if you want to install cn=test,ou=test1,ou=test,dc=exmaple,dc=com you should have this entry available u=test1,ou=test,dc=exmaple,dc=com.
 Otherwise you will recieve an exception.
 Also please avoid of attributes duplicates. 
 
 Brief usage examples in recipe:
-
+---------------------------------
+```text
 server_ip = "10.10.10.10"
 domain = "dc=example,dc=com"
 root_user = "cn=root,#{domain}"
@@ -46,7 +54,7 @@ libs_ldap_organizationalUnit "test" do
   domain "example.com"
 end
 
-##Creates ou=testi1, from ou=test entry in example.com base domain.So it will be : ou=test1,ou=test,dc=example,dc=com
+#Creates ou=testi1, from ou=test entry in example.com base domain.So it will be : ou=test1,ou=test,dc=example,dc=com
 libs_ldap_organizationalUnit "test1" do
   host server_ip
   username root_user
@@ -130,5 +138,5 @@ libs_ldap_posixAccount "test123" do
   password root_pass
   domain "example.com"
 end
-
+```
 
